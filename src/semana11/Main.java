@@ -1,4 +1,4 @@
-package modelo;
+package semana11;
 import processing.core.PApplet;
 
 public class Main extends PApplet {
@@ -6,12 +6,12 @@ public class Main extends PApplet {
 	private Logica app;
 	
 	static public void main(String[] args) {
-		PApplet.main("modelo.Main");
+		PApplet.main("semana11.Main");
 	}
 
 	@Override
 	public void settings() {
-		size(1000, 700);
+		size(500, 500);
 	}
 
 	@Override
@@ -29,6 +29,11 @@ public class Main extends PApplet {
 	@Override
 	public void mouseClicked(){
 		app.click();
+	}
+	
+	@Override
+	public void keyPressed(){
+		app.tecla();
 	}
 }
 
