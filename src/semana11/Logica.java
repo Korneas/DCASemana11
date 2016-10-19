@@ -279,57 +279,54 @@ public class Logica {
 	}
 
 	public void ubicacionInd() {
+		int iX=250;
+		int iY=250;
+		
 		jpn.beginDraw();
 		jpn.background(255);
 		jpn.noStroke();
 		jpn.fill(255, 0, 0);
-		jpn.ellipse(jpn.width / 2 + 20, jpn.height / 2, 80, 80);
+		jpn.ellipse(jpn.width / 2 +50 , jpn.height / 2, 80, 80);
 		jpn.endDraw();
 
 		jpn.loadPixels();
-		
-		app.image(jpn, 250, 250);
+
+		app.imageMode(3);
+		app.image(jpn, iX, iY);
 
 		if (mostrarC) {
 			int xR = 0;
 			int yR = 0;
+			int contador = 0;
 			for (int i = 0; i < jpn.width; i++) {
-				int colorI = jpn.pixels[i];
-				if (app.red(colorI) > 220) {
-					xR += i;
-				}
-			}
-			for (int j = 0; j < jpn.height; j++) {
-				int index = 0 + j * jpn.width;
-				int colorA = jpn.pixels[index];
-				if (app.red(colorA) > 220) {
-					yR += j;
+				for (int j = 0; j < jpn.height; j++) {
+					if(app.red(jpn.pixels[i+(j*jpn.width)])>200 && app.green(jpn.pixels[i+(j*jpn.width)])<10){
+						contador++;
+						xR+=i;
+						yR+=j;
+					}
 				}
 			}
 
-			xR = xR / jpn.width;
-			yR = yR / jpn.height;
-
-			app.fill(0,200,100);
-			app.rect(xR, yR, 20, 20);
+			xR = xR / contador;
+			yR = yR / contador;
 			
-			System.out.println(yR);
+			app.rectMode(3);
+			app.fill(0, 200, 100);
+			app.rect(xR-200+iX, yR-100+iY, 20, 20);
 		}
 
-//		jpn.updatePixels();
-		
-		
 		app.ellipse(250, 450, 40, 40);
 	}
 
-	public void ubicacionVar(){
-		
+	public void ubicacionVar() {
+
 	}
-	
-	public void chromaKey(){
-		
+
+	public void chromaKey() {
+
 	}
-	
+
 	public void click() {
 		if (zonaSensible(50, 350) && pantalla == 0) {
 			inv = true;
@@ -368,7 +365,7 @@ public class Logica {
 		if (zonaSensible(50, 450) && pantalla == 5) {
 			pintarP = !pintarP;
 		}
-		
+
 		if (zonaSensible(250, 450) && pantalla == 6) {
 			mostrarC = !mostrarC;
 		}
