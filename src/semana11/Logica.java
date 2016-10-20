@@ -28,6 +28,9 @@ public class Logica {
 	private PGraphics jpn;
 	private boolean mostrarC;
 
+	private PImage aros;
+	private boolean mostrarA;
+
 	public Logica(PApplet app) {
 		this.app = app;
 
@@ -49,6 +52,8 @@ public class Logica {
 
 		jpn = app.createGraphics(400, 200);
 
+		aros = app.loadImage("anillos.jpg");
+
 	}
 
 	public void ejecutar() {
@@ -64,7 +69,7 @@ public class Logica {
 			degradado();
 			break;
 		case 3:
-			filtroUmbral(180);
+			filtroUmbral(70);
 			break;
 		case 4:
 			filtroGrises();
@@ -76,9 +81,10 @@ public class Logica {
 			ubicacionInd();
 			break;
 		case 7:
-
+			ubicacionVar();
 			break;
 		case 8:
+			chromaKey();
 			break;
 		}
 	}
@@ -97,19 +103,19 @@ public class Logica {
 		}
 
 		app.noStroke();
-		app.fill(255);
+		app.fill(360);
 		app.ellipse(50, 450, 40, 40);
 		app.fill(0);
 		app.ellipse(50, 450, 20, 20);
 
 		for (int i = 0; i < 15; i++) {
-			app.fill(255 - (i * 12));
+			app.fill(360 - (i * 12));
 			app.ellipse(50, 400, 40 - (i * 2), 40 - (i * 2));
 		}
 
-		app.fill(0, 50, 90);
+		app.fill(150, 50, 40);
 		app.ellipse(50, 350, 40, 40);
-		app.fill(50, 90, 0);
+		app.fill(200, 50, 40);
 		app.ellipse(50, 350, 20, 20);
 	}
 
@@ -121,22 +127,22 @@ public class Logica {
 		if (pintarB) {
 			ban.loadPixels();
 			for (int i = 0; i < ban.pixels.length / 2; i++) {
-				ban.pixels[i] = app.color(220, 220, 0);
+				ban.pixels[i] = app.color(50, 100, 100);
 			}
 
 			for (int i = ban.pixels.length / 2; i < (ban.pixels.length / 2) + (ban.pixels.length / 4); i++) {
-				ban.pixels[i] = app.color(0, 0, 200);
+				ban.pixels[i] = app.color(225, 100, 100);
 			}
 
 			for (int i = ban.pixels.length - 1; i > (ban.pixels.length / 2) + (ban.pixels.length / 4) - 1; i--) {
-				ban.pixels[i] = app.color(220, 0, 0);
+				ban.pixels[i] = app.color(0, 100, 100);
 			}
 			ban.updatePixels();
 		}
 
 		app.image(ban, 250, 250);
 
-		app.fill(220, 220, 0);
+		app.fill(50, 80, 100);
 		app.ellipse(250, 450, 40, 40);
 	}
 
@@ -159,7 +165,7 @@ public class Logica {
 
 		app.image(deg, 250, 250);
 
-		app.fill(0, 220, 220);
+		app.fill(200, 100, 80);
 		app.ellipse(250, 450, 40, 40);
 	}
 
@@ -169,15 +175,12 @@ public class Logica {
 		if (pintarU) {
 			for (int i = 0; i < face.pixels.length; i++) {
 				int colorA = face.pixels[i];
-				float valorR = app.red(colorA);
-				float valorG = app.green(colorA);
-				float valorB = app.blue(colorA);
-				float prom = (valorR + valorG + valorB) / 3;
+				float brillo = app.brightness(colorA);
 
-				if (prom > umbral) {
-					faceU.pixels[i] = app.color(255);
+				if (brillo > umbral) {
+					faceU.pixels[i] = app.color(0, 0, 100);
 				} else {
-					faceU.pixels[i] = app.color(0);
+					faceU.pixels[i] = app.color(0, 0, 0);
 				}
 			}
 			faceU.updatePixels();
@@ -191,7 +194,7 @@ public class Logica {
 
 		app.fill(0);
 		app.ellipse(50, 450, 40, 40);
-		app.fill(255);
+		app.fill(360);
 		app.ellipse(50, 450, 20, 20);
 	}
 
@@ -202,12 +205,9 @@ public class Logica {
 		if (pintarGr) {
 			for (int i = 0; i < ast.pixels.length; i++) {
 				int colorA = ast.pixels[i];
-				float valorR = app.red(colorA);
-				float valorG = app.green(colorA);
-				float valorB = app.blue(colorA);
-				float promedio = (valorR + valorG + valorB) / 3;
+				float brillo = app.brightness(colorA);
 
-				astG.pixels[i] = app.color(promedio);
+				astG.pixels[i] = app.color(brillo * 3);
 			}
 			astG.updatePixels();
 		}
@@ -219,7 +219,7 @@ public class Logica {
 		}
 
 		for (int i = 0; i < 15; i++) {
-			app.fill(255 - (i * 12));
+			app.fill(360 - (i * 12));
 			app.ellipse(50, 450, 40 - (i * 2), 40 - (i * 2));
 		}
 	}
@@ -272,21 +272,22 @@ public class Logica {
 		}
 
 		app.rectMode(3);
-		app.fill(20);
+		app.fill(100);
 		app.rect(50, 450, 40, 40);
-		app.fill(120);
+		app.fill(200);
 		app.rect(50, 450, 20, 20);
 	}
 
 	public void ubicacionInd() {
-		int iX=250;
-		int iY=250;
-		
+		int iX = 250;
+		int iY = 250;
+
 		jpn.beginDraw();
-		jpn.background(255);
+		jpn.colorMode(PApplet.HSB,360,100,100);
+		jpn.background(360);
 		jpn.noStroke();
-		jpn.fill(255, 0, 0);
-		jpn.ellipse(jpn.width / 2 +50 , jpn.height / 2, 80, 80);
+		jpn.fill(0, 100, 100);
+		jpn.ellipse(jpn.width / 2 + 50, jpn.height / 2, 80, 80);
 		jpn.endDraw();
 
 		jpn.loadPixels();
@@ -300,27 +301,43 @@ public class Logica {
 			int contador = 0;
 			for (int i = 0; i < jpn.width; i++) {
 				for (int j = 0; j < jpn.height; j++) {
-					if(app.red(jpn.pixels[i+(j*jpn.width)])>200 && app.green(jpn.pixels[i+(j*jpn.width)])<10){
+					if (app.hue(jpn.pixels[i + (j * jpn.width)]) >= -10
+							&& app.hue(jpn.pixels[i + (j * jpn.width)]) <= 10
+							&& app.saturation(jpn.pixels[i + (j * jpn.width)]) > 80) {
 						contador++;
-						xR+=i;
-						yR+=j;
+						xR += i;
+						yR += j;
 					}
 				}
 			}
 
-			xR = xR / contador;
-			yR = yR / contador;
-			
+			if (contador != 0) {
+				xR = xR / contador;
+				yR = yR / contador;
+			}
+
 			app.rectMode(3);
-			app.fill(0, 200, 100);
-			app.rect(xR-200+iX, yR-100+iY, 20, 20);
+			app.fill(150, 80, 60);
+			app.rect(xR - 200 + iX, yR - 100 + iY, 20, 20);
 		}
 
+		app.fill(360);
 		app.ellipse(250, 450, 40, 40);
 	}
 
 	public void ubicacionVar() {
+		app.imageMode(3);
+		app.image(aros, 250, 250);
 
+		if (mostrarA) {
+			detColor(aros, 350);
+			detColor(aros, 50);
+			detColor(aros, 150);
+			detColor(aros, 200);
+		}
+
+		app.fill(140, 70, 80);
+		app.ellipse(250, 450, 40, 40);
 	}
 
 	public void chromaKey() {
@@ -369,6 +386,10 @@ public class Logica {
 		if (zonaSensible(250, 450) && pantalla == 6) {
 			mostrarC = !mostrarC;
 		}
+
+		if (zonaSensible(250, 450) && pantalla == 7) {
+			mostrarA = !mostrarA;
+		}
 	}
 
 	public void tecla() {
@@ -377,11 +398,22 @@ public class Logica {
 			if (pantalla > 0) {
 				pantalla--;
 			}
+			if (pantalla==5){
+				app.colorMode(PApplet.RGB,255,255,255);
+			} else {
+				app.colorMode(PApplet.HSB,360,100,100);
+			}
 			break;
 
 		case PApplet.RIGHT:
 			if (pantalla < 8) {
 				pantalla++;
+			}
+			
+			if (pantalla==5){
+				app.colorMode(PApplet.RGB,255,255,255);
+			} else {
+				app.colorMode(PApplet.HSB,360,100,100);
 			}
 			break;
 		}
@@ -392,5 +424,30 @@ public class Logica {
 			return true;
 		}
 		return false;
+	}
+
+	public void detColor(PImage img, int col) {
+		int x = 0;
+		int y = 0;
+		int cont = 0;
+		for (int i = 0; i < img.width; i++) {
+			for (int j = 0; j < img.height; j++) {
+				if (app.hue(img.pixels[i + (j * img.width)]) >= col - 10
+						&& app.hue(img.pixels[i + (j * img.width)]) <= col + 10
+						&& app.saturation(img.pixels[i + (j * img.width)]) > 85) {
+					cont++;
+					x += i;
+					y += j;
+				}
+			}
+		}
+
+		x = x / cont;
+		y = y / cont;
+
+		app.rectMode(3);
+		app.fill(120, 80, 80);
+		app.rect(x - (img.width / 2) + 250, y - (img.height / 2) + 250, 20, 20);
+
 	}
 }

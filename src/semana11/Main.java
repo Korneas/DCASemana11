@@ -17,6 +17,7 @@ public class Main extends PApplet {
 	@Override
 	public void setup() {
 		app = new Logica(this);
+		colorMode(HSB,360,100,100);
 
 	}
 
