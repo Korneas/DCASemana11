@@ -164,7 +164,7 @@ public class Logica {
 				for (int j = 0; j < deg.height; j++) {
 					int index = i + j * deg.width;
 					float d = PApplet.dist(i, j, deg.width / 2, deg.height / 2);
-					deg.pixels[index] = app.color(d);
+					deg.pixels[index] = app.color(d*2);
 				}
 			}
 			deg.updatePixels();
@@ -352,9 +352,30 @@ public class Logica {
 		per.loadPixels();
 		perEdt.loadPixels();
 		
+		if (mostrarCh){
+			for (int i = 0; i < per.width; i++) {
+				for (int j = 0; j < per.height; j++) {
+					int index = i + (j*per.width);
+					int px = per.pixels[index];
+					if(app.green(px)>=100 && app.red(px)<80){
+						perEdt.pixels[index] = fondo.pixels[index];
+					} else {
+						perEdt.pixels[index] = per.pixels[index];
+					}
+				}
+			}
+		}
 		
+		if(mostrarCh){
+			app.image(perEdt, 250, 250);
+		} else {
+			app.image(per, 250, 250);
+		}
 		
 		perEdt.updatePixels();
+		
+		app.fill(200, 50, 40);
+		app.ellipse(250, 450, 40, 40);
 	}
 
 	public void click() {
@@ -403,6 +424,10 @@ public class Logica {
 		if (zonaSensible(250, 450) && pantalla == 7) {
 			mostrarA = !mostrarA;
 		}
+		
+		if (zonaSensible(250, 450) && pantalla == 8) {
+			mostrarCh = !mostrarCh;
+		}
 	}
 
 	public void tecla() {
@@ -423,7 +448,7 @@ public class Logica {
 				pantalla++;
 			}
 			
-			if (pantalla==5){
+			if (pantalla==5 || pantalla==8){
 				app.colorMode(PApplet.RGB,255,255,255);
 			} else {
 				app.colorMode(PApplet.HSB,360,100,100);
@@ -471,7 +496,7 @@ public class Logica {
 			for (int j = 0; j < img.height; j++) {
 				if (app.brightness(img.pixels[i + (j * img.width)]) >= brg - 10
 						&& app.brightness(img.pixels[i + (j * img.width)]) <= brg + 10
-						&& app.saturation(img.pixels[i + (j * img.width)]) < 50) {
+						&& app.saturation(img.pixels[i + (j * img.width)]) < 40) {
 					cont++;
 					x += i;
 					y += j;
@@ -486,4 +511,5 @@ public class Logica {
 		app.fill(120, 80, 80);
 		app.rect(x - (img.width / 2) + 250, y - (img.height / 2) + 250, 20, 20);
 	}
+
 }
