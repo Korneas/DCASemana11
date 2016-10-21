@@ -30,6 +30,9 @@ public class Logica {
 
 	private PImage aros;
 	private boolean mostrarA;
+	
+	private PImage per,perEdt,fondo;
+	private boolean mostrarCh;
 
 	public Logica(PApplet app) {
 		this.app = app;
@@ -53,6 +56,10 @@ public class Logica {
 		jpn = app.createGraphics(400, 200);
 
 		aros = app.loadImage("anillos.jpg");
+		
+		per = app.loadImage("chromaPer.jpg");
+		perEdt = app.createImage(per.width, per.height, PApplet.ARGB);
+		fondo = app.loadImage("chromaFondo.jpg");
 
 	}
 
@@ -334,6 +341,7 @@ public class Logica {
 			detColor(aros, 50);
 			detColor(aros, 150);
 			detColor(aros, 200);
+			detNegro(aros, 0);
 		}
 
 		app.fill(140, 70, 80);
@@ -341,7 +349,12 @@ public class Logica {
 	}
 
 	public void chromaKey() {
-
+		per.loadPixels();
+		perEdt.loadPixels();
+		
+		
+		
+		perEdt.updatePixels();
 	}
 
 	public void click() {
@@ -448,6 +461,29 @@ public class Logica {
 		app.rectMode(3);
 		app.fill(120, 80, 80);
 		app.rect(x - (img.width / 2) + 250, y - (img.height / 2) + 250, 20, 20);
+	}
+	
+	public void detNegro(PImage img,int brg){
+		int x = 0;
+		int y = 0;
+		int cont = 0;
+		for (int i = 0; i < img.width; i++) {
+			for (int j = 0; j < img.height; j++) {
+				if (app.brightness(img.pixels[i + (j * img.width)]) >= brg - 10
+						&& app.brightness(img.pixels[i + (j * img.width)]) <= brg + 10
+						&& app.saturation(img.pixels[i + (j * img.width)]) < 50) {
+					cont++;
+					x += i;
+					y += j;
+				}
+			}
+		}
 
+		x = x / cont;
+		y = y / cont;
+
+		app.rectMode(3);
+		app.fill(120, 80, 80);
+		app.rect(x - (img.width / 2) + 250, y - (img.height / 2) + 250, 20, 20);
 	}
 }
